@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-
     const burger = document.querySelector('.burger');
     const navMenu = document.querySelector('.nav-links');
     const navLinks = document.querySelectorAll('.nav-links .nav-link');
     const langButtons = document.querySelectorAll('.lang-btn');
-    const translatableElements = document.querySelectorAll('[data-key]');
     const navbar = document.querySelector('.navbar');
 
-    // NEW: Function to handle navbar style on scroll
     const handleScroll = () => {
         if (window.scrollY > 50) {
             navbar.classList.add('navbar-scrolled');
@@ -15,8 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.classList.remove('navbar-scrolled');
         }
     };
-    
-    // Attach the scroll listener
     window.addEventListener('scroll', handleScroll);
 
     const handleNavToggle = () => {
@@ -24,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.classList.toggle('nav-active');
             burger.classList.toggle('toggle');
         });
-
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (navMenu.classList.contains('nav-active')) {
@@ -45,13 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
             hero_subtitle: 'Bold fragrances for the unapologetic soul.',
             hero_button: 'Explore The Collection',
             collection_title: 'Our Collection',
-            contact_title: 'Get In Touch',
-            contact_subtitle: 'Have questions? Fill out the form below and we\'ll get back to you shortly.',
-            form_name: 'Your Name',
-            form_email: 'Your Email',
-            form_message: 'Your Message',
-            form_button: 'Send Message',
-            powered_by: 'Powered By'
+            contact_title: 'Contact us for details',
+            form_fullname: 'Full name',
+            form_email: 'Email',
+            form_fragrance: 'Wanted fragrance (optional)',
+            form_button: 'Submit',
+            powered_by: 'Powered by',
+            footer_copyright: '© 2025 hellsShop'
         },
         ge: {
             logo_text: 'HELLSHOP',
@@ -62,13 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
             hero_subtitle: 'საგულდაგულოდ შერჩეული სუნამოები თამამი სულისთვის.',
             hero_button: 'კოლექციის ნახვა',
             collection_title: 'ჩვენი კოლექცია',
-            contact_title: 'დაგვიკავშირდით',
-            contact_subtitle: 'გაქვთ კითხვები? შეავსეთ ფორმა და მალე გიპასუხებთ.',
-            form_name: 'თქვენი სახელი',
+            contact_title: 'დაგვიკავშირდით დეტალებისთვის',
+            form_fullname: 'სრული სახელი',
             form_email: 'თქვენი იმეილი',
-            form_message: 'თქვენი შეტყობინება',
+            form_fragrance: 'სასურველი სუნამო (სურვილისამებრ)',
             form_button: 'გაგზავნა',
-            powered_by: 'შექმნილია'
+            powered_by: 'შექმნილია',
+            footer_copyright: '© 2025 hellsShop'
         },
         ru: {
             logo_text: 'HELLSHOP',
@@ -79,21 +73,26 @@ document.addEventListener('DOMContentLoaded', function() {
             hero_subtitle: 'Смелые ароматы для души без компромиссов.',
             hero_button: 'Посмотреть коллекцию',
             collection_title: 'Наша коллекция',
-            contact_title: 'Свяжитесь с нами',
-            contact_subtitle: 'Есть вопросы? Заполните форму ниже, и мы скоро свяжемся с вами.',
-            form_name: 'Ваше имя',
+            contact_title: 'Свяжитесь с нами для деталей',
+            form_fullname: 'Полное имя',
             form_email: 'Ваш email',
-            form_message: 'Ваше сообщение',
+            form_fragrance: 'Желаемый аромат (необязательно)',
             form_button: 'Отправить',
-            powered_by: 'Создано'
+            powered_by: 'Создано',
+            footer_copyright: '© 2025 hellsShop'
         }
     };
 
     const translatePage = (language) => {
-        translatableElements.forEach(element => {
-            const key = element.getAttribute('data-key');
-            if (translations[language] && translations[language][key]) {
-                element.textContent = translations[language][key];
+        const elementsToTranslate = document.querySelectorAll('[data-key], [data-placeholder-key]');
+        elementsToTranslate.forEach(element => {
+            const textKey = element.dataset.key;
+            const placeholderKey = element.dataset.placeholderKey;
+            if (textKey && translations[language][textKey]) {
+                element.textContent = translations[language][textKey];
+            }
+            if (placeholderKey && translations[language][placeholderKey]) {
+                element.setAttribute('placeholder', translations[language][placeholderKey]);
             }
         });
         localStorage.setItem('language', language);
@@ -113,6 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const currentLang = localStorage.getItem('language') || 'en';
     translatePage(currentLang);
-
     handleNavToggle();
+    handleScroll();
 });
